@@ -1,0 +1,329 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI營養健康管理系統</title>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        :root {
+            --main-green: #90B77D;
+            --light-green: #D2E3C8;
+            --bg-green: #F0F7EE;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: 'Arial', sans-serif;
+            background-color: var(--bg-green);
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .nav-buttons {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 1000;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            justify-content: flex-end;
+        }
+
+        .btn {
+            background-color: var(--main-green);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s;
+            white-space: nowrap;
+        }
+
+        .btn:hover {
+            background-color: var(--light-green);
+            color: #333;
+        }
+
+        .page {
+            display: none;
+            padding: 20px;
+            height: 100vh;
+            overflow: hidden;
+        }
+
+        .page-title {
+            font-size: 2.5em;
+            margin-bottom: 30px;
+            color: var(--main-green);
+            font-weight: bold;
+        }
+
+        .content-container {
+            height: calc(100vh - 150px);
+            overflow-y: auto;
+            padding-right: 20px;
+        }
+
+        #health-data .content-container {
+            overflow: hidden;
+            height: calc(100vh - 100px);
+        }
+
+        #health-data .vertical-layout {
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+
+        #health-data .result-box {
+            margin: 0;
+        }
+
+        #health-data .nutrition-box {
+            flex: 0 0 auto;
+        }
+
+        #health-data .chart-box {
+            flex: 1;
+            min-height: 0;
+            display: flex;
+            flex-direction: column;
+        }
+
+        #health-data .chart-container {
+            flex: 1;
+            position: relative;
+            min-height: 0;
+        }
+
+        #healthChart {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+        }
+
+        .home {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 50px;
+            flex-wrap: wrap;
+            gap: 30px;
+            height: 100vh;
+        }
+
+        .home-content {
+            flex: 1;
+            min-width: 300px;
+            padding-right: 20px;
+        }
+
+        .home-image {
+            flex: 1;
+            min-width: 300px;
+            background-color: var(--light-green);
+            padding: 20px;
+            border-radius: 20px;
+        }
+
+        .home-image img {
+            width: 100%;
+            height: auto;
+            border-radius: 10px;
+            object-fit: cover;
+        }
+
+        .form-group {
+            margin: 15px 0;
+            max-width: 500px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 5px;
+        }
+
+        .form-group input, .form-group select {
+            width: 100%;
+            padding: 8px;
+            border-radius: 10px;
+            border: 1px solid var(--main-green);
+        }
+
+        .result-box {
+            background-color: white;
+            padding: 20px;
+            border-radius: 20px;
+            margin: 20px 0;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .vertical-layout {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+            margin: 20px 0;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .nav-buttons {
+                position: fixed;
+                top: 0;
+                right: 0;
+                left: 0;
+                padding: 10px;
+                background-color: var(--bg-green);
+                justify-content: center;
+            }
+
+            .page {
+                padding-top: 80px;
+            }
+
+            #home {
+                padding: 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .home-content {
+                padding-right: 0;
+            }
+
+            .form-group {
+                margin: 10px auto;
+            }
+
+            .page-title {
+                font-size: 2em;
+                margin-bottom: 20px;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="nav-buttons">
+        <button class="btn" onclick="showPage('home')">主頁</button>
+        <button class="btn" onclick="showPage('profile')">個人資料</button>
+        <button class="btn" onclick="showPage('food-analysis')">食物分析</button>
+        <button class="btn" onclick="showPage('health-data')">健康數據</button>
+    </div>
+
+    <!-- 主頁 -->
+    <div id="home" class="page home">
+        <div class="home-content">
+            <h1>基於人工智能的營養及健康管理系統</h1>
+            <p>透過AI技術結合營養知識，幫助用戶養成健康飲食習慣，改善整體健康。AI可自動識別食物、計算熱量與營養素，讓用戶靈活調整飲食。此方案不僅適用於個人，還能擴展至學校、醫療機構及老人院，提升社會整體營養管理水平。</p>
+        </div>
+        <div class="home-image">
+            <img src="image2.jpg" alt="健康飲食圖片">
+        </div>
+    </div>
+
+    <!-- 個人資料頁面 -->
+    <div id="profile" class="page">
+        <h1 class="page-title">個人資料</h1>
+        <div class="content-container">
+            <form id="profileForm">
+                <div class="form-group">
+                    <label for="age">年齡</label>
+                    <input type="number" id="age" required>
+                </div>
+                <div class="form-group">
+                    <label for="gender">性別</label>
+                    <select id="gender" required>
+                        <option value="male">男性</option>
+                        <option value="female">女性</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="height">身高 (cm)</label>
+                    <input type="number" id="height" required>
+                </div>
+                <div class="form-group">
+                    <label for="weight">體重 (kg)</label>
+                    <input type="number" id="weight" required>
+                </div>
+                <div class="form-group">
+                    <label for="activity">活動量</label>
+                    <select id="activity" required>
+                        <option value="1">久座不動（辦公室工作）</option>
+                        <option value="2">輕度活動（每周運動一至兩次）</option>
+                        <option value="3">中度活動（每周運動三至五次）</option>
+                        <option value="4">重度活動（每周運動六至七次）</option>
+                        <option value="5">極重度運動（運動員等級）</option>
+                    </select>
+                </div>
+                <button type="submit" class="btn">計算</button>
+            </form>
+            <div id="calculationResults" class="result-box"></div>
+        </div>
+    </div>
+
+    <!-- 食物分析頁面 -->
+    <div id="food-analysis" class="page">
+        <h1 class="page-title">食物分析</h1>
+        <div class="content-container">
+            <div class="vertical-layout">
+                <div class="form-group">
+                    <label for="mealType">餐飲類型</label>
+                    <select id="mealType">
+                        <option value="breakfast">早餐</option>
+                        <option value="lunch">午餐</option>
+                        <option value="dinner">晚餐</option>
+                        <option value="snack">下午茶</option>
+                        <option value="midnight">宵夜</option>
+                    </select>
+                </div>
+                <div>
+                    <input type="file" id="foodImage" accept="image/*" class="btn">
+                    <button onclick="analyzeFoodImage()" class="btn">分析食物圖片</button>
+                </div>
+                <div id="analysisResult" class="result-box"></div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 健康數據頁面 -->
+    <div id="health-data" class="page">
+        <h1 class="page-title">健康數據</h1>
+        <div class="content-container">
+            <div class="vertical-layout">
+                <div class="result-box nutrition-box">
+                    <h3>今日營養攝取</h3>
+                    <ul id="nutritionList">
+                        <li>總能量: <span id="totalCalories">0</span> kcal</li>
+                        <li>碳水化合物: <span id="totalCarbs">0</span> g</li>
+                        <li>脂肪: <span id="totalFat">0</span> g</li>
+                        <li>蛋白質: <span id="totalProtein">0</span> g</li>
+                    </ul>
+                </div>
+                <div class="result-box chart-box">
+                    <h3>能量攝取趨勢</h3>
+                    <div class="chart-container">
+                        <canvas id="healthChart"></canvas>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>
