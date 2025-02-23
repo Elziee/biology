@@ -7,20 +7,38 @@
 }
 
 body {
-    font-family: 'Helvetica Neue', Arial, sans-serif;
+    font-family: 'DFKai-sb', '標楷體', 'Helvetica Neue', Arial, sans-serif;
     background-color: var(--secondary-pink);
     margin: 0;
     padding: 0;
+    font-size: 16px;
 }
 
 .navbar {
     background-color: var(--cream);
-    padding: 1rem 2rem;
+    padding: 1rem;
     border-bottom: 2px solid var(--text-black);
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+@media (max-width: 768px) {
+    .navbar .container-fluid {
+        flex-direction: column;
+        text-align: center;
+    }
+    
+    .navbar .d-flex {
+        margin-top: 1rem;
+        flex-wrap: wrap;
+        justify-content: center;
+    }
 }
 
 .logo {
-    font-family: 'Georgia', serif;
+    font-family: 'DFKai-sb', '標楷體', 'Georgia', serif;
     font-style: italic;
     font-size: 1.5rem;
     color: var(--text-black);
@@ -29,48 +47,101 @@ body {
 .main-container {
     background-color: var(--primary-green);
     border-radius: 25px;
-    margin: 2rem;
-    padding: 2rem;
+    margin: 1rem;
+    padding: 1rem;
     color: var(--text-black);
+}
+
+@media (min-width: 768px) {
+    .main-container {
+        margin: 2rem;
+        padding: 2rem;
+    }
 }
 
 .hero-section {
     display: flex;
+    flex-direction: column;
     align-items: center;
     gap: 2rem;
     margin-bottom: 2rem;
 }
 
+@media (min-width: 992px) {
+    .hero-section {
+        flex-direction: row;
+    }
+}
+
 .hero-text {
     flex: 1;
+    text-align: center;
+}
+
+@media (min-width: 992px) {
+    .hero-text {
+        text-align: left;
+    }
 }
 
 .hero-text h1 {
-    font-size: 3.5rem;
+    font-size: 2.5rem;
     font-weight: bold;
     margin-bottom: 1rem;
     line-height: 1.2;
+}
+
+@media (min-width: 768px) {
+    .hero-text h1 {
+        font-size: 3.5rem;
+    }
 }
 
 .hero-image {
     flex: 1;
     background-color: var(--primary-pink);
     border-radius: 20px;
-    padding: 2rem;
+    padding: 1rem;
+    width: 100%;
+}
+
+@media (min-width: 768px) {
+    .hero-image {
+        padding: 2rem;
+    }
+}
+
+.hero-image img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
 }
 
 .card-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 2rem;
+    grid-template-columns: 1fr;
+    gap: 1rem;
     margin-top: 2rem;
+}
+
+@media (min-width: 768px) {
+    .card-container {
+        grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+        gap: 2rem;
+    }
 }
 
 .feature-card {
     background-color: var(--cream);
     border-radius: 15px;
-    padding: 2rem;
+    padding: 1.5rem;
     text-align: center;
+}
+
+@media (min-width: 768px) {
+    .feature-card {
+        padding: 2rem;
+    }
 }
 
 .btn-primary {
@@ -81,6 +152,16 @@ body {
     border-radius: 25px;
     font-weight: bold;
     transition: transform 0.2s;
+    width: 100%;
+    max-width: 300px;
+    margin: 0.5rem auto;
+}
+
+@media (min-width: 768px) {
+    .btn-primary {
+        width: auto;
+        margin: 0;
+    }
 }
 
 .btn-primary:hover {
@@ -94,6 +175,7 @@ body {
     justify-content: center;
     gap: 1rem;
     margin: 1rem 0;
+    flex-wrap: wrap;
 }
 
 .quantity-control button {
@@ -116,9 +198,16 @@ body {
 .profile-form {
     background-color: var(--cream);
     border-radius: 15px;
-    padding: 2rem;
+    padding: 1.5rem;
     max-width: 600px;
-    margin: 2rem auto;
+    margin: 1rem auto;
+}
+
+@media (min-width: 768px) {
+    .profile-form {
+        padding: 2rem;
+        margin: 2rem auto;
+    }
 }
 
 .form-control, .form-select {
@@ -126,17 +215,27 @@ body {
     border: 2px solid var(--text-black);
     border-radius: 10px;
     padding: 0.8rem;
+    width: 100%;
 }
 
 .navigation-buttons {
     position: fixed;
-    bottom: 2rem;
+    bottom: 1rem;
     left: 0;
     right: 0;
-    padding: 0 2rem;
+    padding: 0 1rem;
     display: flex;
     justify-content: space-between;
     z-index: 100;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+@media (min-width: 768px) {
+    .navigation-buttons {
+        bottom: 2rem;
+        padding: 0 2rem;
+    }
 }
 
 .chart-container {
@@ -144,11 +243,18 @@ body {
     border-radius: 15px;
     padding: 1rem;
     margin: 1rem 0;
+    overflow-x: auto;
 }
 
 .nutrition-data {
     background-color: var(--cream);
     border-radius: 15px;
-    padding: 2rem;
+    padding: 1.5rem;
     margin-bottom: 1rem;
+}
+
+@media (min-width: 768px) {
+    .nutrition-data {
+        padding: 2rem;
+    }
 }
