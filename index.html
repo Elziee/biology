@@ -23,8 +23,7 @@
             padding: 0;
             font-family: 'Arial', sans-serif;
             background-color: var(--bg-green);
-            min-height: 100vh;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .nav-buttons {
@@ -57,8 +56,7 @@
         .page {
             display: none;
             padding: 20px;
-            height: 100vh;
-            overflow: hidden;
+            overflow-y: auto;
         }
 
         .page-title {
@@ -69,18 +67,15 @@
         }
 
         .content-container {
-            height: calc(100vh - 150px);
             overflow-y: auto;
             padding-right: 20px;
         }
 
         #health-data .content-container {
-            overflow: hidden;
-            height: calc(100vh - 100px);
+            overflow-y: auto;
         }
 
         #health-data .vertical-layout {
-            height: 100%;
             display: flex;
             flex-direction: column;
             gap: 20px;
@@ -99,6 +94,8 @@
             min-height: 0;
             display: flex;
             flex-direction: column;
+            height: 60vh;
+            position: relative;
         }
 
         #health-data .chart-container {
@@ -108,11 +105,8 @@
         }
 
         #healthChart {
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
+            width: 100%;
+            height: 100%;
         }
 
         .home {
@@ -181,18 +175,42 @@
         }
 
         @media (max-width: 768px) {
+            body {
+                overflow-y: auto;
+            }
+            
+            .page {
+                min-height: 100vh;
+                height: auto;
+                overflow-y: auto;
+            }
+
+            #health-data .content-container,
+            #food-analysis .content-container {
+                height: auto;
+                overflow-y: auto;
+            }
+
+            .vertical-layout {
+                height: auto;
+                min-height: calc(100vh - 150px);
+            }
+
+            #health-data .chart-container {
+                height: 50vh;
+                position: relative;
+            }
+
             .nav-buttons {
-                position: fixed;
+                position: sticky;
                 top: 0;
-                right: 0;
-                left: 0;
-                padding: 10px;
                 background-color: var(--bg-green);
-                justify-content: center;
+                padding: 10px;
+                z-index: 1000;
             }
 
             .page {
-                padding-top: 80px;
+                padding-top: 10px;
             }
 
             #home {
