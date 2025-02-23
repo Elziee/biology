@@ -1,0 +1,154 @@
+:root {
+    --primary-green: #8B9B69;
+    --primary-pink: #FFD4D4;
+    --secondary-pink: #FFE5E5;
+    --text-black: #1A1A1A;
+    --cream: #FFF3E0;
+}
+
+body {
+    font-family: 'Helvetica Neue', Arial, sans-serif;
+    background-color: var(--secondary-pink);
+    margin: 0;
+    padding: 0;
+}
+
+.navbar {
+    background-color: var(--cream);
+    padding: 1rem 2rem;
+    border-bottom: 2px solid var(--text-black);
+}
+
+.logo {
+    font-family: 'Georgia', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--text-black);
+}
+
+.main-container {
+    background-color: var(--primary-green);
+    border-radius: 25px;
+    margin: 2rem;
+    padding: 2rem;
+    color: var(--text-black);
+}
+
+.hero-section {
+    display: flex;
+    align-items: center;
+    gap: 2rem;
+    margin-bottom: 2rem;
+}
+
+.hero-text {
+    flex: 1;
+}
+
+.hero-text h1 {
+    font-size: 3.5rem;
+    font-weight: bold;
+    margin-bottom: 1rem;
+    line-height: 1.2;
+}
+
+.hero-image {
+    flex: 1;
+    background-color: var(--primary-pink);
+    border-radius: 20px;
+    padding: 2rem;
+}
+
+.card-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.feature-card {
+    background-color: var(--cream);
+    border-radius: 15px;
+    padding: 2rem;
+    text-align: center;
+}
+
+.btn-primary {
+    background-color: var(--text-black);
+    color: var(--cream);
+    border: none;
+    padding: 0.8rem 2rem;
+    border-radius: 25px;
+    font-weight: bold;
+    transition: transform 0.2s;
+}
+
+.btn-primary:hover {
+    transform: scale(1.05);
+    background-color: #333;
+}
+
+.quantity-control {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+    margin: 1rem 0;
+}
+
+.quantity-control button {
+    background: none;
+    border: 2px solid var(--text-black);
+    border-radius: 50%;
+    width: 30px;
+    height: 30px;
+    cursor: pointer;
+}
+
+.quantity-input {
+    width: 60px;
+    text-align: center;
+    border: none;
+    background: none;
+    font-size: 1.2rem;
+}
+
+.profile-form {
+    background-color: var(--cream);
+    border-radius: 15px;
+    padding: 2rem;
+    max-width: 600px;
+    margin: 2rem auto;
+}
+
+.form-control, .form-select {
+    background-color: var(--secondary-pink);
+    border: 2px solid var(--text-black);
+    border-radius: 10px;
+    padding: 0.8rem;
+}
+
+.navigation-buttons {
+    position: fixed;
+    bottom: 2rem;
+    left: 0;
+    right: 0;
+    padding: 0 2rem;
+    display: flex;
+    justify-content: space-between;
+    z-index: 100;
+}
+
+.chart-container {
+    background-color: var(--cream);
+    border-radius: 15px;
+    padding: 1rem;
+    margin: 1rem 0;
+}
+
+.nutrition-data {
+    background-color: var(--cream);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 1rem;
+}
