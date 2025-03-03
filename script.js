@@ -138,19 +138,39 @@ let healthChart;
 function initHealthChart() {
     const ctx = document.getElementById('healthChart').getContext('2d');
     healthChart = new Chart(ctx, {
-        type: 'line',
+        type: 'bar',
         data: {
-            labels: [],
+            labels: ['碳水化合物', '蛋白質', '脂肪', '膳食纖維', '維生素C', '鈣質', 'TDEE'],
             datasets: [{
-                label: 'TDEE',
-                data: [],
-                borderColor: 'rgb(144, 183, 125)',
-                fill: false
+                label: '每日營養攝取量 (克)',
+                data: [275, 60, 55, 25, 0.09, 1.2, null],
+                backgroundColor: [
+                    'rgba(255, 99, 132, 0.7)',
+                    'rgba(54, 162, 235, 0.7)',
+                    'rgba(255, 206, 86, 0.7)',
+                    'rgba(75, 192, 192, 0.7)',
+                    'rgba(153, 102, 255, 0.7)',
+                    'rgba(255, 159, 64, 0.7)',
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderColor: [
+                    'rgba(255, 99, 132, 1)',
+                    'rgba(54, 162, 235, 1)',
+                    'rgba(255, 206, 86, 1)',
+                    'rgba(75, 192, 192, 1)',
+                    'rgba(153, 102, 255, 1)',
+                    'rgba(255, 159, 64, 1)',
+                    'rgba(0, 0, 0, 0)'
+                ],
+                borderWidth: 1,
+                yAxisID: 'y'
             }, {
-                label: '實際攝取熱量',
-                data: [],
-                borderColor: 'rgb(255, 99, 132)',
-                fill: false
+                label: 'TDEE (大卡)',
+                data: [null, null, null, null, null, null, 2000],
+                backgroundColor: 'rgba(75, 192, 192, 0.7)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+                yAxisID: 'y1'
             }]
         },
         options: {
@@ -158,12 +178,32 @@ function initHealthChart() {
             maintainAspectRatio: false,
             scales: {
                 y: {
-                    beginAtZero: true
+                    beginAtZero: true,
+                    position: 'left',
+                    title: {
+                        display: true,
+                        text: '克 (g)'
+                    }
+                },
+                y1: {
+                    beginAtZero: true,
+                    position: 'right',
+                    title: {
+                        display: true,
+                        text: '大卡 (kcal)'
+                    },
+                    grid: {
+                        drawOnChartArea: false
+                    }
                 }
             },
             plugins: {
                 legend: {
                     position: 'top'
+                },
+                title: {
+                    display: true,
+                    text: '每日營養素攝取量與能量消耗追蹤'
                 }
             }
         }
