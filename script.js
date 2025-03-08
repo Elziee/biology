@@ -75,7 +75,7 @@ function calculateTDEE(bmr, activityLevel) {
 }
 
 // 食物分析功能
-function analyzeFoodImage() {
+async function analyzeFoodImage() {
     const fileInput = document.getElementById('foodImage');
     const file = fileInput.files[0];
     
@@ -84,44 +84,97 @@ function analyzeFoodImage() {
         return;
     }
     
-    // 模擬AI分析結果
-    const mockAnalysis = {
-        name: '範例食物',
-        calories: 300,
-        carbs: 40,
-        fat: 10,
-        protein: 15
-    };
-    
-    // 更新當日營養攝取
-    userData.dailyNutrition.calories += mockAnalysis.calories;
-    userData.dailyNutrition.carbs += mockAnalysis.carbs;
-    userData.dailyNutrition.fat += mockAnalysis.fat;
-    userData.dailyNutrition.protein += mockAnalysis.protein;
-    
-    // 記錄食物數據
-    userData.foodData.push({
-        ...mockAnalysis,
-        type: document.getElementById('mealType').value,
-        timestamp: new Date().toISOString()
+    try {
+        // 調整圖片大小並轉換為 base64
+        const base64Image = await resizeAndConvertToBase64(file);
+        
+        // 發送到 API
+        const response = await fetch('/api/vision', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                image: base64Image
+            })
+        });
+        
+        if (!response.ok) {
+            throw new Error('API request failed');
+        }
+        
+        const analysis = await response.json();
+        
+        // 更新當日營養攝取
+        userData.dailyNutrition.calories += analysis.calories;
+        userData.dailyNutrition.carbs += analysis.carbs;
+        userData.dailyNutrition.fat += analysis.fat;
+        userData.dailyNutrition.protein += analysis.protein;
+        
+        // 記錄食物數據
+        userData.foodData.push({
+            ...analysis,
+            type: document.getElementById('mealType').value,
+            timestamp: new Date().toISOString()
+        });
+        
+        // 更新顯示
+        updateNutritionDisplay();
+        updateHealthChart();
+        
+        // 顯示分析結果
+        document.getElementById('analysisResult').innerHTML = `
+            <h3>食物分析結果</h3>
+            <p>食物名稱: ${analysis.name}</p>
+            <p>熱量: ${analysis.calories} 大卡</p>
+            <p>碳水化合物: ${analysis.carbs}g</p>
+            <p>脂肪: ${analysis.fat}g</p>
+            <p>蛋白質: ${analysis.protein}g</p>
+        `;
+        
+        // 保存數據
+        saveUserData();
+        
+    } catch (error) {
+        console.error('Error:', error);
+        alert('分析圖片時發生錯誤');
+    }
+}
+
+// 新增 resizeAndConvertToBase64 函數
+function resizeAndConvertToBase64(file) {
+    return new Promise((resolve, reject) => {
+        const img = new Image();
+        img.onload = () => {
+            // 計算新的尺寸，確保最大邊長不超過 1024
+            let width = img.width;
+            let height = img.height;
+            const maxSize = 1024;
+
+            if (width > maxSize || height > maxSize) {
+                if (width > height) {
+                    height = Math.round((height * maxSize) / width);
+                    width = maxSize;
+                } else {
+                    width = Math.round((width * maxSize) / height);
+                    height = maxSize;
+                }
+            }
+
+            // 創建 canvas 並繪製縮放後的圖片
+            const canvas = document.createElement("canvas");
+            canvas.width = width;
+            canvas.height = height;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(img, 0, 0, width, height);
+
+            // 轉換為 base64，指定為 JPEG 格式
+            const base64 = canvas.toDataURL("image/jpeg", 0.8);
+            resolve(base64);
+        };
+        img.onerror = reject;
+        img.src = URL.createObjectURL(file);
     });
-    
-    // 更新顯示
-    updateNutritionDisplay();
-    updateHealthChart();
-    
-    // 顯示分析結果
-    document.getElementById('analysisResult').innerHTML = `
-        <h3>食物分析結果</h3>
-        <p>食物名稱: ${mockAnalysis.name}</p>
-        <p>熱量: ${mockAnalysis.calories} 大卡</p>
-        <p>碳水化合物: ${mockAnalysis.carbs}g</p>
-        <p>脂肪: ${mockAnalysis.fat}g</p>
-        <p>蛋白質: ${mockAnalysis.protein}g</p>
-    `;
-    
-    // 保存數據
-    saveUserData();
 }
 
 // 更新營養攝取顯示
